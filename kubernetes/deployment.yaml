@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-container
+          image: your-docker-image:latest
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "500m"
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 3000
+            fsGroup: 2000
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: DB_HOST
+              value: "localhost"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              value: "myuser"
+            - name: DB_PASSWORD
+              value: "mypassword"
+            - name: DB_NAME
+              value: "mydatabase"
+            - name: MONGO_URI
+              value: "mongodb://localhost:27017/mydatabase"
+            - name: ELASTICSEARCH_NODE
+              value: "http://localhost:9200"
+            - name: METRICS_PORT
+              value: "9091"
+            - name: LOG_LEVEL
+              value: "info"
+            - name: EXECUTION_TIME_LIMIT
+              value: "10m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
