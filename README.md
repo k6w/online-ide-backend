@@ -1,8 +1,15 @@
-# Backend Setup Guide
+# Online IDE Backend
 
-## Overview
+This **Advanced & Secure Online IDE Backend** is a sophisticated backend system designed to power a secure online IDE, supporting multiple programming languages and featuring robust sandboxing and security measures.
 
-This guide provides step-by-step instructions for setting up and running the backend for the Public IDE. The backend is designed to be secure, performant, and easy to deploy using Docker and Kubernetes.
+## Key Features
+
+- **Language Support**: JavaScript, Python, Lua, C++, and cURL requests.
+- **Sandboxing**: Secure execution in isolated Docker containers with gVisor.
+- **Security**: Rate limiting, input sanitization, and secure configurations.
+- **Resource Management**: Configured to manage CPU and memory usage.
+- **Logging and Monitoring**: Integrated with Prometheus and Winston.
+- **Deployment**: Docker and Kubernetes configurations included.
 
 ## Table of Contents
 
@@ -23,6 +30,8 @@ This guide provides step-by-step instructions for setting up and running the bac
 13. [Troubleshooting](#troubleshooting)
 14. [Contributing](#contributing)
 15. [License](#license)
+16. [Usage Examples](#usage-examples)
+17. [API Documentation](#api-documentation)
 
 ## Prerequisites
 
@@ -219,3 +228,123 @@ To contribute to this project, follow these guidelines:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Usage Examples
+
+### Execute Code
+
+**POST /api/execute**
+
+Execute code in a specified language. 
+
+**Request:**
+
+```bash
+curl -X POST http://localhost:3000/api/execute \
+  -H "Content-Type: application/json" \
+  -d '{
+    "language": "javascript",
+    "code": "console.log(\"Hello World\");"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "output": "Hello World\n"
+}
+```
+
+### Execute cURL Request
+
+**POST /api/curl**
+
+Perform a cURL request with specified parameters.
+
+**Request:**
+
+```bash
+curl -X POST http://localhost:3000/api/curl \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://jsonplaceholder.typicode.com/todos/1",
+    "method": "GET",
+    "headers": "",
+    "data": ""
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "output": "{\n  \"userId\": 1,\n  \"id\": 1,\n  \"title\":
+
+ \"delectus aut autem\",\n  \"completed\": false\n}"
+}
+```
+
+## API Documentation
+
+### Execute Code
+
+**Endpoint:** `/api/execute`
+
+**Method:** POST
+
+**Request Body:**
+
+```json
+{
+  "language": "string",
+  "code": "string"
+}
+```
+
+- **language**: Programming language of the code to be executed. (e.g., "javascript", "python", "lua", "cpp")
+- **code**: The code to be executed.
+
+**Response:**
+
+```json
+{
+  "output": "string"
+}
+```
+
+- **output**: The result of the executed code.
+
+### Execute cURL Request
+
+**Endpoint:** `/api/curl`
+
+**Method:** POST
+
+**Request Body:**
+
+```json
+{
+  "url": "string",
+  "method": "string",
+  "headers": "string",
+  "data": "string"
+}
+```
+
+- **url**: The URL for the cURL request.
+- **method**: HTTP method (e.g., "GET", "POST").
+- **headers**: Optional headers for the request.
+- **data**: Optional data to be sent with the request.
+
+**Response:**
+
+```json
+{
+  "output": "string"
+}
+```
+
+- **output**: The response from the cURL request.
+
+For further information, adjust the request parameters as needed based on your use case.
