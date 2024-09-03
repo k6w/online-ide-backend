@@ -1,15 +1,15 @@
 # Online IDE Backend
 
-This **Advanced & Secure Online IDE Backend** is a sophisticated backend system designed to power a secure online IDE, supporting multiple programming languages and featuring robust sandboxing and security measures.
+The **Online IDE Backend** is a robust and secure backend system designed to support an online Integrated Development Environment (IDE). It handles code execution in multiple languages, provides sandboxing for security, and integrates with various databases and monitoring tools.
 
 ## Key Features
 
-- **Language Support**: JavaScript, Python, Lua, C++, and cURL requests.
-- **Sandboxing**: Secure execution in isolated Docker containers with gVisor.
-- **Security**: Rate limiting, input sanitization, and secure configurations.
-- **Resource Management**: Configured to manage CPU and memory usage.
-- **Logging and Monitoring**: Integrated with Prometheus and Winston.
-- **Deployment**: Docker and Kubernetes configurations included.
+- **Multi-Language Support**: Execute code in JavaScript, Python, Lua, C++, and handle cURL requests.
+- **Sandboxing**: Uses Docker with gVisor for secure execution.
+- **Security**: Includes rate limiting, input sanitization, and secure configurations.
+- **Resource Management**: Configured to manage CPU and memory usage efficiently.
+- **Logging and Monitoring**: Integrated with Prometheus for monitoring and Winston for logging.
+- **Deployment**: Supports deployment using Docker and Kubernetes.
 
 ## Table of Contents
 
@@ -49,8 +49,8 @@ Before you begin, ensure you have the following installed:
 Clone the repository from GitHub to your local machine:
 
 ```bash
-git clone https://github.com/your-username/your-repository.git
-cd your-repository
+git clone https://github.com/k6w/online-ide-backend.git
+cd online-ide-backend
 ```
 
 ## Configure Environment Variables
@@ -108,10 +108,10 @@ npm install
 Build the Docker image using the Dockerfile provided:
 
 ```bash
-docker build -t your-backend-image:latest .
+docker build -t online-ide-backend:latest .
 ```
 
-This command creates a Docker image with the tag `your-backend-image:latest`.
+This command creates a Docker image with the tag `online-ide-backend:latest`.
 
 ### Run the Docker Container
 
@@ -122,7 +122,7 @@ docker run -d \
   -p 3000:3000 \
   --name backend-container \
   --env-file .env \
-  your-backend-image:latest
+  online-ide-backend:latest
 ```
 
 - `-d`: Runs the container in detached mode.
@@ -219,11 +219,13 @@ If deploying using Kubernetes, apply the Kubernetes configurations:
 
 ## Contributing
 
-To contribute to this project, follow these guidelines:
+To contribute to this project:
 
 1. Fork the repository and create a feature branch.
 2. Make your changes and test them thoroughly.
 3. Submit a pull request with a clear description of your changes.
+
+For detailed contribution guidelines, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file (create one if necessary).
 
 ## License
 
@@ -235,24 +237,23 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 **POST /api/execute**
 
-Execute code in a specified language. 
+Execute code in a specified language.
 
 **Request:**
 
 ```bash
-curl -X POST http://localhost:3000/api/execute \
+curl -X POST http://localhost
+
+:3000/api/execute \
   -H "Content-Type: application/json" \
-  -d '{
-    "language": "javascript",
-    "code": "console.log(\"Hello World\");"
-  }'
+  -d '{"language": "python", "code": "print(\"Hello, World!\")"}'
 ```
 
 **Response:**
 
 ```json
 {
-  "output": "Hello World\n"
+  "output": "Hello, World!\n"
 }
 ```
 
@@ -260,28 +261,21 @@ curl -X POST http://localhost:3000/api/execute \
 
 **POST /api/curl**
 
-Perform a cURL request with specified parameters.
+Perform a cURL request.
 
 **Request:**
 
 ```bash
 curl -X POST http://localhost:3000/api/curl \
   -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://jsonplaceholder.typicode.com/todos/1",
-    "method": "GET",
-    "headers": "",
-    "data": ""
-  }'
+  -d '{"url": "https://jsonplaceholder.typicode.com/todos/1", "method": "GET"}'
 ```
 
 **Response:**
 
 ```json
 {
-  "output": "{\n  \"userId\": 1,\n  \"id\": 1,\n  \"title\":
-
- \"delectus aut autem\",\n  \"completed\": false\n}"
+  "output": "{\n  \"userId\": 1,\n  \"id\": 1,\n  \"title\": \"delectus aut autem\",\n  \"completed\": false\n}"
 }
 ```
 
@@ -346,5 +340,3 @@ curl -X POST http://localhost:3000/api/curl \
 ```
 
 - **output**: The response from the cURL request.
-
-For further information, adjust the request parameters as needed based on your use case.
